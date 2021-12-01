@@ -1,28 +1,34 @@
 <?php
-//text file
- $url =  urlencode($url);
- $file = file_get_contents($url);
- echo $file;
+use  \PhpOffice\PhpWord\IOFactory;
 
- //xml file
- if (file_exists('test.xml')) {
-    $xml = simplexml_load_file('test.xml');
-    print_r($xml);
-    //echo $xml->title;
-} else {
-    exit('Не удалось открыть файл test.xml.');
+class OpenFile  {
+
+    public $file ='resources/test.txt' ;
+    public $xml = 'resources/test.xml' ;
+    public $doc = 'resources/test.doc' ;
+
+    //text file
+    public function OpenTex () {
+      $this->file = file_get_contents($this->file);
+      return  $this->file;
+    }
+
+     //xml file
+    public function OpenXml (){
+        if (file_exists('test.xml')) {
+            $parse = simplexml_load_file($this->xml);
+            return $parse;
+            //echo $parse->title;
+        } else {
+            exit('Не удалось открыть файл ' . $this->xml);
+        }
+    }
+
+    //doc file
+    public function OpenDoc (){
+       $phpWord = \PhpOffice\PhpWord\IOFactory::load($source, 'MsDoc');
+       return  $phpWord;
+    }
 }
-
-//doc file
-//composer require phpoffice/phpword
-
-// Read contents
-$name = basename(__FILE__, '.php');
-$source = "resources/{$name}.doc";
-echo date('H:i:s'), " Reading contents from `{$source}`", EOL;
-$phpWord = \PhpOffice\PhpWord\IOFactory::load($source, 'MsDoc');
-
-// Save file
-echo write($phpWord, basename(__FILE__, '.php'), $writers);
 
 ?>
